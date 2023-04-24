@@ -3,20 +3,18 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>&lt;my-element> Demo</title>
+    <title>Bpost address autocomplete</title>
     <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../node_modules/lit/polyfill-support.js"></script>
-    <script type="module" src="../my-element.js"></script>
-    <style>
-      p {
-        border: solid 1px blue;
-        padding: 8px;
-      }
-    </style>
+    <script type="module" src="../dist/bp-address-autocomplete.js"></script>
   </head>
   <body>
-    <my-element>
-      <p>This is child content</p>
-    </my-element>
+    <input id="id-street" type="text"/>
+    <input id="id-houseNumber" type="text" />
+    <input id="id-locality" type="text" />
+    <input id="id-postal-code" type="text" />
+    <input id="id-latitude" type="text" />
+    <input id="id-longitude" type="text" />
+    <bp-address-autocomplete timeout=100 street="id-street" houseNumber="id-houseNumber" locality="id-locality" postalCode="id-postal-code" latitude="id-latitude" longitude="id-longitude" />
   </body>
 </html>
