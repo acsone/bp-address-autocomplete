@@ -1,3 +1,6 @@
+/**
+ * Data class that hold data of one address.
+ */
 export declare class Address {
     id: Number;
     locality: string;
@@ -8,6 +11,6 @@ export declare class Address {
     streetName: string;
     string: string;
     houseNumber: string;
-    constructor({ address, messages }: any, index: any);
+    constructor({ address, messages }: any, index: Number);
 }
 //# sourceMappingURL=address.d.ts.map

@@ -5,15 +5,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { Address } from './address';
 import { createRef, ref } from 'lit/directives/ref.js';
 let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
     constructor() {
         super(...arguments);
         this.inputRef = createRef();
+        /**
+         * Our internal states.
+         */
         this.suggestions = [];
         this.count = 0;
+        /**
+         * Properties that are passed in props.
+         */
         this.timeout = 200;
         this.street = "";
         this.houseNumber = "";
@@ -21,36 +27,65 @@ let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
         this.postalCode = "";
         this.latitude = "";
         this.longitude = "";
+        this.province = "";
     }
+    /**
+     * This method reacts on click on an address suggestion. There are two possibilities to autocomplete the address :
+     * 1. Is to directly modify the value of the inputs passed in props using the functions below.
+     * 2. An event is sent and we you react to it in the parent component (in your favorite framework).
+     * @param ev
+     */
     _onClick(ev) {
-        let item = this.suggestions.find((el) => el.id === +ev.target.id);
-        let { inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude } = this._getInputs();
+        const item = this.suggestions.find((el) => el.id === +ev.target.id);
+        const { inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince } = this._getInputs();
         if (item != undefined) {
-            this._autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude);
-            let searchBar = this.inputRef.value;
-            searchBar.value = "";
+            this._autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince);
+            this.inputRef.value.value = "";
             this.suggestions = [];
         }
-        let itemClick = new CustomEvent("onSelectedAddress", { detail: item });
+        const itemClick = new CustomEvent("onSelectedAddress", { detail: item });
         this.dispatchEvent(itemClick);
     }
-    _autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude) {
+    /**
+     * This method allows you to autocomplete the different fields.
+     * @param item
+     * @param inputStreet
+     * @param inputHouseNumber
+     * @param inputLocality
+     * @param inputPostalCode
+     * @param inputLatitude
+     * @param inputLongitude
+     * @param inputProvince
+     */
+    _autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince) {
         inputStreet != null ? inputStreet.value = item.streetName : "";
         inputHouseNumber != null ? inputHouseNumber.value = item.houseNumber : "";
         inputLocality != null ? inputLocality.value = item.locality : "";
         inputPostalCode != null ? inputPostalCode.value = item.postalCode : "";
         inputLatitude != null ? inputLatitude.value = item.latitude.toString() : "";
         inputLongitude != null ? inputLongitude.value = item.longitude.toString() : "";
+        inputProvince != null ? inputProvince.value = item.province : "";
     }
+    /**
+     * This method retrieves fields closest to the current element.
+     * @returns fields to be autocompleted.
+     */
     _getInputs() {
-        let inputStreet = this._nearest(this, this.street);
-        let inputHouseNumber = this._nearest(this, this.houseNumber);
-        let inputLocality = this._nearest(this, this.locality);
-        let inputPostalCode = this._nearest(this, this.postalCode);
-        let inputLatitude = this._nearest(this, this.latitude);
-        let inputLongitude = this._nearest(this, this.longitude);
-        return { inputStreet, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputHouseNumber };
+        const inputStreet = this._nearest(this, this.street);
+        const inputHouseNumber = this._nearest(this, this.houseNumber);
+        const inputLocality = this._nearest(this, this.locality);
+        const inputPostalCode = this._nearest(this, this.postalCode);
+        const inputLatitude = this._nearest(this, this.latitude);
+        const inputLongitude = this._nearest(this, this.longitude);
+        const inputProvince = this._nearest(this, this.province);
+        return { inputStreet, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputHouseNumber, inputProvince };
     }
+    /**
+     * This method returns the element closest to the current element by its id.
+     * @param currentElement
+     * @param id
+     * @returns
+     */
     _nearest(currentElement, id) {
         const elements = document.querySelectorAll(`[id="${id}"]`);
         let minDistance = -1;
@@ -65,6 +100,10 @@ let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
         }
         return closestElement;
     }
+    /**
+     * This method reacts to changes in the address. It will send the request to the API with the specified changes.
+     * Request are sent with a delay that can be modified in props to avoid sending request at each change.
+     */
     async _changeAddress(event) {
         const input = event.target;
         clearTimeout(this.timeoutId);
@@ -80,6 +119,7 @@ let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
             },
         }).then(response => {
             if (!response.ok) {
+                this.suggestions = [];
                 throw new Error("Network response was not OK");
             }
             return response.json();
@@ -102,13 +142,13 @@ let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
 };
 BpAddressAutocomplete.styles = [css `.address{cursor: pointer}`];
 __decorate([
-    property({ type: (Array) })
+    state()
 ], BpAddressAutocomplete.prototype, "suggestions", void 0);
 __decorate([
-    property({ type: Number })
+    state()
 ], BpAddressAutocomplete.prototype, "count", void 0);
 __decorate([
-    property()
+    state()
 ], BpAddressAutocomplete.prototype, "timeoutId", void 0);
 __decorate([
     property({ type: Number })
@@ -131,6 +171,9 @@ __decorate([
 __decorate([
     property({ type: String })
 ], BpAddressAutocomplete.prototype, "longitude", void 0);
+__decorate([
+    property({ type: String })
+], BpAddressAutocomplete.prototype, "province", void 0);
 BpAddressAutocomplete = __decorate([
     customElement('bp-address-autocomplete')
 ], BpAddressAutocomplete);

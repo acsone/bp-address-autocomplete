@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Bpost address autocomplete</title>
-    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script src="../node_modules/lit/polyfill-support.js"></script>
-    <script type="module" src="../dist/bp-address-autocomplete.js"></script>
-  </head>
-  <body>
-    <input id="id-street" type="text"/>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Bpost address autocomplete</title>
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/lit/polyfill-support.js"></script>
+  <script type="module" src="../dist/bp-address-autocomplete.js"></script>
+</head>
+<style>
+  div{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+  }
+</style>
+<body>
+  <div>
+    <label for="id-street">Street: </label>
+    <input id="id-street" type="text" />
+    <label for="id-houseNumber">Number: </label>
     <input id="id-houseNumber" type="text" />
+    <label for="id-locality">Locality: </label>
     <input id="id-locality" type="text" />
+    <label for="id-postal-code">Postal Code: </label>
     <input id="id-postal-code" type="text" />
+    <label for="id-province">Province: </label>
+    <input id="id-province" type="text" />
+    <label for="id-latitude">Latitude: </label>
     <input id="id-latitude" type="text" />
+    <label for="id-longitude">Longitude: </label>
     <input id="id-longitude" type="text" />
-    <bp-address-autocomplete timeout=100 street="id-street" houseNumber="id-houseNumber" locality="id-locality" postalCode="id-postal-code" latitude="id-latitude" longitude="id-longitude" />
-  </body>
+  </div>
+  <bp-address-autocomplete timeout=100 street="id-street" houseNumber="id-houseNumber" locality="id-locality"
+    postalCode="id-postal-code" latitude="id-latitude" longitude="id-longitude" province="id-province" />
+</body>
+
 </html>

@@ -1,3 +1,6 @@
+/**
+ * Data class that hold data of one address.
+ */
 export class Address{
     id: Number;
     locality: string;
@@ -8,13 +11,13 @@ export class Address{
     streetName: string;
     string: string;
     houseNumber: string;
-    constructor({address, messages}: any, index: any){
+    constructor({address, messages}: any, index: Number){
         this.id = index;
         this.locality = address.municipalityName;
         this.latitude = address.latitude;
         this.longitude = address.longitude;
         this.postalCode = address.postalCode;
-        this.province = address.province;
+        this.province = address.province ?? "";
         this.streetName = address.streetName ?? "";
         this.string = address.string;
         this.houseNumber = address.houseNumber ?? "";
