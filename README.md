@@ -2,7 +2,12 @@
 
 This component helps Belgian users to encode their addresses correctly. When user encodes an address in the component, it returns a list of suggested addresses
 that he can select. When he selects an address, the component will send an event to the parent component so it can autocomplete fields. The component also
-allows you to autocomplete fields if you pass the id of these fields. The component will return the field closest to it.
+allows you to autocomplete fields if you pass the id of these fields. The component will return the field closest to it.\
+Example : 
+```html
+<bp-address-autocomplete timeout=100 street="id-street" houseNumber="id-houseNumber" locality="id-locality"
+    postalCode="id-postal-code" latitude="id-latitude" longitude="id-longitude" province="id-province" />
+```
 
 ## Setup
 
@@ -55,6 +60,39 @@ If you use VS Code, we highly recommend the [lit-plugin extension](https://marke
 - Quick Fixes
 
 The project is setup to recommend lit-plugin to VS Code users if they don't already have it installed.
+
+## Styling
+
+Component here is not stylized, you can do it according to your needs. Here we use [css ::part()](https://developer.mozilla.org/en-US/docs/Web/CSS/::part).
+If you want to add some css to search bar, you can use ::part(search-bar).\
+Example : 
+```scss
+bp-address-autocomplete::part(search-bar) {
+    @extend .form-control;
+    padding-right: 0;
+    padding-left: 1rem;
+    width: 100%;
+}
+```
+If you want to add some css to ```<ul>``` container, you can use ::part(ul-suggestions).\
+Example :
+```scss
+bp-address-autocomplete::part(ul-suggestions) {
+    @extend .list-group;
+    margin-top: 0;
+}
+```
+Finally, If you want to add some css to ```<li>``` elements, you can use ::part(li-suggestion)
+.\
+Example : 
+```scss
+bp-address-autocomplete::part(li-suggestion) {
+    @extend .list-group-item;
+    width: 100%;
+    padding-right: 0;
+}
+```
+Because we are in scss, it is possible to extend class, this is the case here with bootstrap class. 
 
 ## Linting
 
