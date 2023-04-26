@@ -28,6 +28,7 @@ let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
         this.latitude = "";
         this.longitude = "";
         this.province = "";
+        this.boxNumber = "";
     }
     /**
      * This method reacts on click on an address suggestion. There are two possibilities to autocomplete the address :
@@ -37,9 +38,9 @@ let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
      */
     _onClick(ev) {
         const item = this.suggestions.find((el) => el.id === +ev.target.id);
-        const { inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince } = this._getInputs();
+        const { inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince, inputBoxNumber } = this._getInputs();
         if (item != undefined) {
-            this._autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince);
+            this._autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince, inputBoxNumber);
             this.inputRef.value.value = "";
             this.suggestions = [];
         }
@@ -57,14 +58,15 @@ let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
      * @param inputLongitude
      * @param inputProvince
      */
-    _autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince) {
-        inputStreet != null ? inputStreet.value = item.streetName : "";
-        inputHouseNumber != null ? inputHouseNumber.value = item.houseNumber : "";
-        inputLocality != null ? inputLocality.value = item.locality : "";
-        inputPostalCode != null ? inputPostalCode.value = item.postalCode : "";
-        inputLatitude != null ? inputLatitude.value = item.latitude.toString() : "";
-        inputLongitude != null ? inputLongitude.value = item.longitude.toString() : "";
-        inputProvince != null ? inputProvince.value = item.province : "";
+    _autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince, inputBoxNumber) {
+        inputStreet != null && (inputStreet.value = item.formatStreetName);
+        inputHouseNumber != null && (inputHouseNumber.value = item.formatHouseNumber);
+        inputLocality != null && (inputLocality.value = item.locality);
+        inputPostalCode != null && (inputPostalCode.value = item.postalCode);
+        inputLatitude != null && (inputLatitude.value = item.latitude.toString());
+        inputLongitude != null && (inputLongitude.value = item.longitude.toString());
+        inputProvince != null && (inputProvince.value = item.formatProvince);
+        inputBoxNumber != null && (inputBoxNumber.value = item.formatBoxNumber);
     }
     /**
      * This method retrieves fields closest to the current element.
@@ -78,7 +80,8 @@ let BpAddressAutocomplete = class BpAddressAutocomplete extends LitElement {
         const inputLatitude = this._nearest(this, this.latitude);
         const inputLongitude = this._nearest(this, this.longitude);
         const inputProvince = this._nearest(this, this.province);
-        return { inputStreet, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputHouseNumber, inputProvince };
+        const inputBoxNumber = this._nearest(this, this.boxNumber);
+        return { inputStreet, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputHouseNumber, inputProvince, inputBoxNumber };
     }
     /**
      * This method returns the element closest to the current element by its id.
@@ -174,6 +177,9 @@ __decorate([
 __decorate([
     property({ type: String })
 ], BpAddressAutocomplete.prototype, "province", void 0);
+__decorate([
+    property({ type: String })
+], BpAddressAutocomplete.prototype, "boxNumber", void 0);
 BpAddressAutocomplete = __decorate([
     customElement('bp-address-autocomplete')
 ], BpAddressAutocomplete);

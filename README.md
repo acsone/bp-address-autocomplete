@@ -125,4 +125,7 @@ run
 ```bash
 rollup -c
 ```
-A file with the name <em>bp-address-autocomplete.bundled.js</em> should appear. Just take this file and integrate it anywhere. 
+A file with the name <em>bp-address-autocomplete.bundled.js</em> should appear. Just take this file and integrate it anywhere.
+
+## Author
+* Samuel Kouff <<s.kouff@student.helmo.be>>

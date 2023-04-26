@@ -7,7 +7,7 @@
   <title>Bpost address autocomplete</title>
   <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
   <script src="../node_modules/lit/polyfill-support.js"></script>
-  <script type="module" src="../dist/bp-address-autocomplete.js"></script>
+  <script type="module" src="../bp-address-autocomplete.bundled.js"></script>
 </head>
 <style>
   div{
@@ -22,6 +22,8 @@
     <input id="id-street" type="text" />
     <label for="id-houseNumber">Number: </label>
     <input id="id-houseNumber" type="text" />
+    <label for="id-boxNumber">Boite: </label>
+    <input id="id-boxNumber" type="text" />
     <label for="id-locality">Locality: </label>
     <input id="id-locality" type="text" />
     <label for="id-postal-code">Postal Code: </label>
@@ -34,7 +36,7 @@
     <input id="id-longitude" type="text" />
   </div>
   <bp-address-autocomplete timeout=100 street="id-street" houseNumber="id-houseNumber" locality="id-locality"
-    postalCode="id-postal-code" latitude="id-latitude" longitude="id-longitude" province="id-province" />
+    postalCode="id-postal-code" latitude="id-latitude" longitude="id-longitude" province="id-province" boxNumber="id-boxNumber" />
 </body>
 
 </html>

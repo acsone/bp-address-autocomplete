@@ -11,6 +11,11 @@ export declare class Address {
     streetName: string;
     string: string;
     houseNumber: string;
+    boxNumber: string;
     constructor({ address, messages }: any, index: Number);
+    get formatBoxNumber(): string;
+    get formatHouseNumber(): string;
+    get formatStreetName(): string;
+    get formatProvince(): string;
 }
 //# sourceMappingURL=address.d.ts.map

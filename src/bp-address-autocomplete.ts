@@ -49,6 +49,9 @@ export class BpAddressAutocomplete extends LitElement {
   @property({ type: String })
   province = "";
 
+  @property({ type: String })
+  boxNumber = "";
+
   /**
    * This method reacts on click on an address suggestion. There are two possibilities to autocomplete the address : 
    * 1. Is to directly modify the value of the inputs passed in props using the functions below.
@@ -57,9 +60,9 @@ export class BpAddressAutocomplete extends LitElement {
    */
   private _onClick(ev: { target: { id: string | number; }; }) {
     const item: Address = this.suggestions.find((el: Address) => el.id === +ev.target.id)!;
-    const { inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince} = this._getInputs();
+    const { inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince, inputBoxNumber} = this._getInputs();
     if (item != undefined) {
-      this._autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince);
+      this._autoComplete(item, inputStreet, inputHouseNumber, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputProvince, inputBoxNumber);
       this.inputRef.value!.value = "";
       this.suggestions = []
     }
@@ -78,14 +81,15 @@ export class BpAddressAutocomplete extends LitElement {
    * @param inputLongitude 
    * @param inputProvince 
    */
-  private _autoComplete(item: Address, inputStreet: HTMLInputElement, inputHouseNumber: HTMLInputElement , inputLocality: HTMLInputElement, inputPostalCode: HTMLInputElement, inputLatitude: HTMLInputElement, inputLongitude: HTMLInputElement, inputProvince: HTMLInputElement) {
-    inputStreet != null ? inputStreet.value = item.streetName : "";
-    inputHouseNumber != null ? inputHouseNumber.value = item.houseNumber: "";
-    inputLocality != null ? inputLocality.value = item.locality : "";
-    inputPostalCode != null ? inputPostalCode.value = item.postalCode : "";
-    inputLatitude != null ? inputLatitude.value = item.latitude.toString() : "";
-    inputLongitude != null ? inputLongitude.value = item.longitude.toString() : "";
-    inputProvince != null ? inputProvince.value = item.province : "";
+  private _autoComplete(item: Address, inputStreet: HTMLInputElement, inputHouseNumber: HTMLInputElement , inputLocality: HTMLInputElement, inputPostalCode: HTMLInputElement, inputLatitude: HTMLInputElement, inputLongitude: HTMLInputElement, inputProvince: HTMLInputElement, inputBoxNumber: HTMLInputElement) {
+    inputStreet != null && (inputStreet.value = item.formatStreetName);
+    inputHouseNumber != null && (inputHouseNumber.value = item.formatHouseNumber);
+    inputLocality != null && (inputLocality.value = item.locality);
+    inputPostalCode != null && (inputPostalCode.value = item.postalCode);
+    inputLatitude != null && (inputLatitude.value = item.latitude.toString());
+    inputLongitude != null && (inputLongitude.value = item.longitude.toString());
+    inputProvince != null && (inputProvince.value = item.formatProvince);
+    inputBoxNumber != null && (inputBoxNumber.value = item.formatBoxNumber); 
   }
 
   /**
@@ -100,7 +104,8 @@ export class BpAddressAutocomplete extends LitElement {
     const inputLatitude = this._nearest(this, this.latitude);
     const inputLongitude = this._nearest(this, this.longitude);
     const inputProvince = this._nearest(this, this.province);
-    return { inputStreet, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputHouseNumber, inputProvince};
+    const inputBoxNumber = this._nearest(this, this.boxNumber);
+    return { inputStreet, inputLocality, inputPostalCode, inputLatitude, inputLongitude, inputHouseNumber, inputProvince, inputBoxNumber};
   }
 
   /**

@@ -21,6 +21,7 @@ export declare class BpAddressAutocomplete extends LitElement {
     latitude: string;
     longitude: string;
     province: string;
+    boxNumber: string;
     /**
      * This method reacts on click on an address suggestion. There are two possibilities to autocomplete the address :
      * 1. Is to directly modify the value of the inputs passed in props using the functions below.
